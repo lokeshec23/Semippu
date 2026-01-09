@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowUpRight, ArrowDownRight, Wallet, TrendingUp, IndianRupee } from 'lucide-react';
 
-const StatCard = ({ title, amount, trend, trendType, icon: Icon, color }) => (
-    <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all">
+const StatCard = ({ title, amount, trend, trendType, icon: Icon, color, onClick }) => (
+    <div
+        onClick={onClick}
+        className={`bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all ${onClick ? 'cursor-pointer hover:-translate-y-1' : ''
+            }`}
+    >
         <div className="flex justify-between items-start mb-4">
             <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${color}`}>
                 <Icon className="w-6 h-6 text-white" />
@@ -20,6 +25,7 @@ const StatCard = ({ title, amount, trend, trendType, icon: Icon, color }) => (
 );
 
 const FinancialOverview = () => {
+    const navigate = useNavigate();
     const [stats, setStats] = useState({
         totalBalance: 0,
         monthlySpending: 0,
@@ -109,6 +115,7 @@ const FinancialOverview = () => {
                 trendType="down"
                 icon={ArrowDownRight}
                 color="bg-purple-600"
+                onClick={() => navigate('/transactions')}
             />
             <StatCard
                 title="Savings Goal"

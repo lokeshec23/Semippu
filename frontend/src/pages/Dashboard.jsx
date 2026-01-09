@@ -55,6 +55,8 @@ const Dashboard = () => {
                             onClick={() => {
                                 if (item.id === 'settings') {
                                     navigate('/settings');
+                                } else if (item.id === 'analytics') {
+                                    navigate('/analytics');
                                 } else {
                                     setActiveTab(item.id);
                                 }
