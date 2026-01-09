@@ -24,8 +24,10 @@ from app.routes.user import router as UserRouter
 from app.routes.bank import router as BankRouter
 from app.routes.card import router as CardRouter
 from app.routes.budget import router as BudgetRouter
+from app.routes.transaction import router as TransactionRouter
 
 app.include_router(UserRouter, tags=["User"], prefix="/api")
 app.include_router(BankRouter, tags=["Banks"], prefix="/api")
 app.include_router(CardRouter, tags=["Cards"], prefix="/api")
 app.include_router(BudgetRouter, tags=["Budgets"], prefix="/api")
+app.include_router(TransactionRouter, tags=["Transactions"], prefix="/api")

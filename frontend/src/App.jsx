@@ -3,6 +3,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Onboarding from './pages/Onboarding';
 import Dashboard from './pages/Dashboard';
+import AddTransaction from './pages/AddTransaction';
+import Settings from './pages/Settings';
 import CardDetailView from './components/CreditCardTracker/CardDetailView';
 import './index.css';
 
@@ -15,6 +17,8 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/onboarding" element={<Onboarding />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/transactions/add" element={<AddTransaction />} />
+                <Route path="/settings" element={<Settings />} />
                 <Route path="/cards/:cardId" element={<CardDetailView />} />
             </Routes>
         </BrowserRouter>

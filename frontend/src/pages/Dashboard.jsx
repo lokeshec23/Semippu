@@ -52,7 +52,13 @@ const Dashboard = () => {
                     ].map(item => (
                         <button
                             key={item.id}
-                            onClick={() => setActiveTab(item.id)}
+                            onClick={() => {
+                                if (item.id === 'settings') {
+                                    navigate('/settings');
+                                } else {
+                                    setActiveTab(item.id);
+                                }
+                            }}
                             className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-all font-medium text-sm
                     ${activeTab === item.id ? 'bg-blue-50 text-blue-600' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}
                   `}
