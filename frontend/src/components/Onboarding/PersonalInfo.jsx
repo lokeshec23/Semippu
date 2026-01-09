@@ -4,6 +4,36 @@ import { Upload, User, Mail, Phone, AlertCircle } from 'lucide-react';
 const PersonalInfo = ({ data, updateData, onNext }) => {
     const [errors, setErrors] = useState({});
     const [touched, setTouched] = useState({});
+    const [loading, setLoading] = useState(true);
+
+    // Fetch user data and auto-fill name and email
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const userId = localStorage.getItem('userId');
+            if (!userId) {
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:8000/api/user/${userId}`);
+                if (response.ok) {
+                    const user = await response.json();
+                    // Auto-fill name and email from registration
+                    updateData({
+                        fullName: user.name,
+                        email: user.email
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     const validateField = (name, value) => {
         let error = "";
@@ -111,10 +141,11 @@ const PersonalInfo = ({ data, updateData, onNext }) => {
                             <input
                                 type="text"
                                 name="fullName"
-                                value={data.fullName || ''}
+                                value={data?.fullName || ''}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                className={`w-full px-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all pl-10 ${errors.fullName ? 'border-red-300 focus:ring-red-200' : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'}`}
+                                disabled={true}
+                                className={`w-full px-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all pl-10 bg-gray-50 cursor-not-allowed ${errors.fullName ? 'border-red-300 focus:ring-red-200' : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'}`}
                                 placeholder="John Doe"
                             />
                             <User className="w-5 h-5 text-gray-400 absolute left-3 top-3.5" />
@@ -129,10 +160,11 @@ const PersonalInfo = ({ data, updateData, onNext }) => {
                             <input
                                 type="email"
                                 name="email"
-                                value={data.email || ''}
+                                value={data?.email || ''}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                className={`w-full px-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all pl-10 ${errors.email ? 'border-red-300 focus:ring-red-200' : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'}`}
+                                disabled={true}
+                                className={`w-full px-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all pl-10 bg-gray-50 cursor-not-allowed ${errors.email ? 'border-red-300 focus:ring-red-200' : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'}`}
                                 placeholder="john@example.com"
                             />
                             <Mail className="w-5 h-5 text-gray-400 absolute left-3 top-3.5" />
@@ -148,7 +180,7 @@ const PersonalInfo = ({ data, updateData, onNext }) => {
                                 type="tel"
                                 name="phoneNumber"
                                 maxLength={10}
-                                value={data.phoneNumber || ''}
+                                value={data?.phoneNumber || ''}
                                 onChange={(e) => {
                                     const val = e.target.value.replace(/\D/g, '');
                                     handleChange({ target: { name: 'phoneNumber', value: val } });
@@ -169,7 +201,7 @@ const PersonalInfo = ({ data, updateData, onNext }) => {
                         <label className="text-sm font-semibold text-gray-700">Gender</label>
                         <select
                             name="gender"
-                            value={data.gender || ''}
+                            value={data?.gender || ''}
                             onChange={handleChange}
                             className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
                         >

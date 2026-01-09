@@ -6,8 +6,8 @@ const EmploymentDetails = ({ data, updateData, onNext, onBack }) => {
     const [errors, setErrors] = useState({});
     const [touched, setTouched] = useState({});
 
-    const isEmployed = ['Employed', 'Self-Employed'].includes(data.status);
-    const isUnemployed = data.status === 'Unemployed';
+    const isEmployed = ['Employed', 'Self-Employed'].includes(data?.status);
+    const isUnemployed = data?.status === 'Unemployed';
 
     const validateField = (name, value) => {
         let error = "";
@@ -85,7 +85,7 @@ const EmploymentDetails = ({ data, updateData, onNext, onBack }) => {
                                     setErrors(prev => ({ ...prev, status: '' }));
                                 }}
                                 className={`py-3 px-4 rounded-xl text-sm font-medium border-2 transition-all
-                    ${data.status === status
+                    ${data?.status === status
                                         ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm'
                                         : 'border-gray-200 hover:border-blue-300 text-gray-600'
                                     }
@@ -106,7 +106,7 @@ const EmploymentDetails = ({ data, updateData, onNext, onBack }) => {
                                 <input
                                     type="text"
                                     name="companyName"
-                                    value={data.companyName || ''}
+                                    value={data?.companyName || ''}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     className={`w-full px-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all pl-10 ${errors.companyName ? 'border-red-300' : 'border-gray-200 focus:border-blue-500'}`}
@@ -123,7 +123,7 @@ const EmploymentDetails = ({ data, updateData, onNext, onBack }) => {
                                 <input
                                     type="text"
                                     name="designation"
-                                    value={data.designation || ''}
+                                    value={data?.designation || ''}
                                     onChange={handleChange}
                                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 outline-none pl-10"
                                     placeholder="Software Engineer"
@@ -141,7 +141,7 @@ const EmploymentDetails = ({ data, updateData, onNext, onBack }) => {
                             <input
                                 type="number"
                                 name="monthlySalary"
-                                value={data.monthlySalary || ''}
+                                value={data?.monthlySalary || ''}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 className={`w-full px-4 py-3 rounded-lg border focus:ring-2 outline-none transition-all pl-10 ${errors.monthlySalary ? 'border-red-300' : 'border-gray-200 focus:border-blue-500'}`}
@@ -157,7 +157,7 @@ const EmploymentDetails = ({ data, updateData, onNext, onBack }) => {
                             <label className="text-sm font-semibold text-gray-700">Salary Date</label>
                             <select
                                 name="salaryDate"
-                                value={data.salaryDate || ''}
+                                value={data?.salaryDate || ''}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 className={`w-full px-4 py-3 rounded-lg border outline-none bg-white ${errors.salaryDate ? 'border-red-300' : 'border-gray-200 focus:border-blue-500'}`}
@@ -178,7 +178,7 @@ const EmploymentDetails = ({ data, updateData, onNext, onBack }) => {
                         <input
                             type="email"
                             name="workEmail"
-                            value={data.workEmail || ''}
+                            value={data?.workEmail || ''}
                             onChange={handleChange}
                             className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 outline-none pl-10"
                             placeholder="you@company.com"

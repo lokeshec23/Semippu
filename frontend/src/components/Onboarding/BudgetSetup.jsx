@@ -15,9 +15,9 @@ const DEFAULT_CATEGORIES = [
 ];
 
 const BudgetSetup = ({ data, updateData, onNext, onBack }) => {
-    const [totalBudget, setTotalBudget] = useState(data.totalBudget || '');
-    const [savingsGoal, setSavingsGoal] = useState(data.savingsGoal || '');
-    const [categories, setCategories] = useState(data.categories || DEFAULT_CATEGORIES);
+    const [totalBudget, setTotalBudget] = useState(data?.totalBudget || '');
+    const [savingsGoal, setSavingsGoal] = useState(data?.savingsGoal || '');
+    const [categories, setCategories] = useState(data?.categories || DEFAULT_CATEGORIES);
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
