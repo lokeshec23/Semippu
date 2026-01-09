@@ -107,6 +107,7 @@ const FinancialOverview = () => {
                 trendType="up"
                 icon={Wallet}
                 color="bg-blue-600"
+                onClick={() => navigate('/bank-accounts')}
             />
             <StatCard
                 title="Monthly Budget"

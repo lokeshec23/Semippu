@@ -174,8 +174,8 @@ const TransactionsList = () => {
                                     key={cat}
                                     onClick={() => setFilters({ ...filters, category: cat })}
                                     className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${filters.category === cat
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                         }`}
                                 >
                                     {cat}
@@ -190,8 +190,8 @@ const TransactionsList = () => {
                                     key={type}
                                     onClick={() => setFilters({ ...filters, type })}
                                     className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${filters.type === type
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                         }`}
                                 >
                                     {type}
@@ -244,7 +244,11 @@ const TransactionsList = () => {
                                         const isIncome = tx.transactionType === 'income';
 
                                         return (
-                                            <div key={tx._id} className="p-4 hover:bg-gray-50 transition-colors">
+                                            <div
+                                                key={tx._id}
+                                                onClick={() => navigate(`/transactions/edit/${tx._id}`)}
+                                                className="p-4 hover:bg-gray-50 transition-colors cursor-pointer"
+                                            >
                                                 <div className="flex items-center justify-between">
                                                     <div className="flex items-center gap-3 flex-1">
                                                         <div className={`w-10 h-10 rounded-full flex items-center justify-center ${isIncome ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-600'
