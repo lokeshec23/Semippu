@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Filter, Search, Calendar, Tag, TrendingUp, TrendingDown, ShoppingBag, Coffee, Car } from 'lucide-react';
+import { API_BASE_URL } from '../utils/constants';
 
 const CATEGORY_ICONS = {
     Shopping: ShoppingBag,
@@ -42,7 +43,7 @@ const TransactionsList = () => {
 
         setLoading(true);
         try {
-            let url = `http://localhost:8000/api/transactions/${userId}?limit=100`;
+            let url = `${API_BASE_URL}/api/transactions/${userId}?limit=100`;
 
             if (filters.category !== 'All') {
                 url += `&category=${encodeURIComponent(filters.category)}`;

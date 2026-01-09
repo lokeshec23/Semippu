@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, User, Mail, Phone, Lock, LogOut, AlertCircle, CheckCircle } from 'lucide-react';
+import { API_BASE_URL } from '../utils/constants';
 
 const Settings = () => {
     const navigate = useNavigate();
@@ -31,7 +32,7 @@ const Settings = () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/api/user/${userId}`);
+            const response = await fetch(`${API_BASE_URL}/api/user/${userId}`);
             if (response.ok) {
                 const data = await response.json();
                 setUser(data);
@@ -63,7 +64,7 @@ const Settings = () => {
                 }
             };
 
-            const response = await fetch(`http://localhost:8000/api/user/${userId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/user/${userId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)

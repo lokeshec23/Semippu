@@ -45,26 +45,20 @@ Netlify is perfect for Vite/React apps.
     *   Value: The URL from Render (e.g., `https://semippu-backend.onrender.com`) **WITHOUT the trailing slash**.
 6.  Click **Deploy site**.
 
-## 3. Important: Incomplete Refactoring
+## 3. Deployment Ready
 
-> [!WARNING]
-> The codebase currently contains some hardcoded `http://localhost:8000` URLs in the following files. **You must refactor these files to use `API_BASE_URL` before deploying the features they control, otherwise they will fail in production.**
+> [!NOTE]
+> All hardcoded URLs in the frontend have been refactored to use `API_BASE_URL`. The application is ready for deployment.
 
-### Files needing update:
-*   `frontend/src/pages/Analytics.jsx`
-*   `frontend/src/pages/BankAccounts.jsx`
-*   `frontend/src/pages/EditTransaction.jsx`
-*   `frontend/src/pages/Settings.jsx`
-*   `frontend/src/pages/TransactionsList.jsx`
-*   `frontend/src/components/CreditCardTracker/CardDetailView.jsx`
-*   `frontend/src/components/Onboarding/PersonalInfo.jsx`
-*   `frontend/src/components/Dashboard/CreditCardsSummary.jsx`
-*   `frontend/src/components/Dashboard/FinancialOverview.jsx`
-*   `frontend/src/components/Dashboard/RecentTransactions.jsx`
+### Verification Checklist:
+1.  **Backend (Render)**:
+    *   [ ] Deployed successfully?
+    *   [ ] `MONGO_DETAILS` env var set?
+    *   [ ] Got the Render URL?
+2.  **Frontend (Netlify)**:
+    *   [ ] `VITE_API_URL` env var set to Render URL?
+    *   [ ] Deployed successfully?
 
-### How to fix:
-1.  Import the constant: `import { API_BASE_URL } from '../utils/constants';` (adjust path as needed).
-2.  Replace `http://localhost:8000` with `${API_BASE_URL}`.
 
 ## 4. Verification
 

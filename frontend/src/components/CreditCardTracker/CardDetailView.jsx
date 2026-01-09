@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Calendar, Filter, Download, MoreVertical, CreditCard, ShoppingBag, Coffee, Car, TrendingUp } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, Legend } from 'recharts';
+import { API_BASE_URL } from '../../utils/constants';
 
 const CATEGORY_ICONS = {
     Shopping: ShoppingBag,
@@ -35,7 +36,7 @@ const CardDetailView = () => {
     const fetchCardData = async () => {
         try {
             const userId = localStorage.getItem('userId');
-            const response = await fetch(`http://localhost:8000/api/cards/${userId}`);
+            const response = await fetch(`${API_BASE_URL}/api/cards/${userId}`);
             if (response.ok) {
                 const cards = await response.json();
                 const card = cards.find(c => c._id === cardId);
@@ -50,7 +51,7 @@ const CardDetailView = () => {
 
     const fetchCardTransactions = async () => {
         try {
-            const response = await fetch(`http://localhost:8000/api/transactions/card/${cardId}`);
+            const response = await fetch(`${API_BASE_URL}/api/transactions/card/${cardId}`);
             if (response.ok) {
                 const data = await response.json();
                 setTransactions(data);

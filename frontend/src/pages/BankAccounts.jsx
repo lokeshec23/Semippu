@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Building2, Wallet, Edit2, Trash2, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
+import { API_BASE_URL } from '../utils/constants';
 
 const BankAccounts = () => {
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ const BankAccounts = () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/api/bank-accounts/${userId}`);
+            const response = await fetch(`${API_BASE_URL}/api/bank-accounts/${userId}`);
             if (response.ok) {
                 const data = await response.json();
                 setAccounts(data);
@@ -57,7 +58,7 @@ const BankAccounts = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:8000/api/bank-accounts', {
+            const response = await fetch(`${API_BASE_URL}/api/bank-accounts`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)

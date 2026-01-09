@@ -6,6 +6,7 @@ import {
     BarChart, Bar, XAxis, YAxis, Tooltip, Legend,
     LineChart, Line, CartesianGrid
 } from 'recharts';
+import { API_BASE_URL } from '../utils/constants';
 
 const Analytics = () => {
     const navigate = useNavigate();
@@ -27,8 +28,8 @@ const Analytics = () => {
 
         try {
             const [txRes, budgetRes] = await Promise.all([
-                fetch(`http://localhost:8000/api/transactions/${userId}?limit=500`),
-                fetch(`http://localhost:8000/api/budgets/${userId}/${new Date().toISOString().slice(0, 7)}`)
+                fetch(`${API_BASE_URL}/api/transactions/${userId}?limit=500`),
+                fetch(`${API_BASE_URL}/api/budgets/${userId}/${new Date().toISOString().slice(0, 7)}`)
             ]);
 
             if (txRes.ok) setTransactions(await txRes.json());

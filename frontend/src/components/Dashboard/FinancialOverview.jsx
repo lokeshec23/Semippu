@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowUpRight, ArrowDownRight, Wallet, TrendingUp, IndianRupee } from 'lucide-react';
+import { API_BASE_URL } from '../../utils/constants';
 
 const StatCard = ({ title, amount, trend, trendType, icon: Icon, color, onClick }) => (
     <div
@@ -44,16 +45,16 @@ const FinancialOverview = () => {
 
             try {
                 // Fetch bank accounts
-                const bankResponse = await fetch(`http://localhost:8000/api/bank-accounts/${userId}`);
+                const bankResponse = await fetch(`${API_BASE_URL}/api/bank-accounts/${userId}`);
                 const banks = bankResponse.ok ? await bankResponse.json() : [];
 
                 // Fetch cards
-                const cardsResponse = await fetch(`http://localhost:8000/api/cards/${userId}`);
+                const cardsResponse = await fetch(`${API_BASE_URL}/api/cards/${userId}`);
                 const cards = cardsResponse.ok ? await cardsResponse.json() : [];
 
                 // Fetch budget for current month
                 const currentMonth = new Date().toISOString().slice(0, 7);
-                const budgetResponse = await fetch(`http://localhost:8000/api/budgets/${userId}/${currentMonth}`);
+                const budgetResponse = await fetch(`${API_BASE_URL}/api/budgets/${userId}/${currentMonth}`);
                 const budget = budgetResponse.ok ? await budgetResponse.json() : null;
 
                 // Calculate stats

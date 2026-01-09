@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Upload, User, Mail, Phone, AlertCircle } from 'lucide-react';
+import { API_BASE_URL } from '../../utils/constants';
 
 const PersonalInfo = ({ data, updateData, onNext }) => {
     const [errors, setErrors] = useState({});
@@ -16,7 +17,7 @@ const PersonalInfo = ({ data, updateData, onNext }) => {
             }
 
             try {
-                const response = await fetch(`http://localhost:8000/api/user/${userId}`);
+                const response = await fetch(`${API_BASE_URL}/api/user/${userId}`);
                 if (response.ok) {
                     const user = await response.json();
                     // Auto-fill name and email from registration

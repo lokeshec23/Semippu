@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingBag, Coffee, Car, ArrowRight, TrendingUp, TrendingDown, Wallet } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { API_BASE_URL } from '../../utils/constants';
 
 const CATEGORY_ICONS = {
     Shopping: ShoppingBag,
@@ -32,7 +33,7 @@ const RecentTransactions = () => {
 
         setLoading(true);
         try {
-            const response = await fetch(`http://localhost:8000/api/transactions/${userId}/recent?limit=5`);
+            const response = await fetch(`${API_BASE_URL}/api/transactions/${userId}/recent?limit=5`);
             console.log('Fetching recent transactions, status:', response.status);
             if (response.ok) {
                 const data = await response.json();

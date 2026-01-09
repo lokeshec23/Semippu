@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Edit2, Trash2, Save, X, AlertCircle } from 'lucide-react';
+import { API_BASE_URL } from '../utils/constants';
 
 const EditTransaction = () => {
     const { transactionId } = useParams();
@@ -31,7 +32,7 @@ const EditTransaction = () => {
 
     const fetchTransaction = async () => {
         try {
-            const response = await fetch(`http://localhost:8000/api/transactions/detail/${transactionId}`);
+            const response = await fetch(`${API_BASE_URL}/api/transactions/detail/${transactionId}`);
             if (response.ok) {
                 const data = await response.json();
                 setTransaction(data);
@@ -91,7 +92,7 @@ const EditTransaction = () => {
                 status: formData.status
             };
 
-            const response = await fetch(`http://localhost:8000/api/transactions/${transactionId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/transactions/${transactionId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -111,7 +112,7 @@ const EditTransaction = () => {
 
     const handleDelete = async () => {
         try {
-            const response = await fetch(`http://localhost:8000/api/transactions/${transactionId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/transactions/${transactionId}`, {
                 method: 'DELETE'
             });
 

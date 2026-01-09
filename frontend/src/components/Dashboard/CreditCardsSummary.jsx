@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CreditCard, MoreVertical } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../../utils/constants';
 
 const CreditCardsSummary = () => {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ const CreditCardsSummary = () => {
             }
 
             try {
-                const response = await fetch(`http://localhost:8000/api/cards/${userId}`);
+                const response = await fetch(`${API_BASE_URL}/api/cards/${userId}`);
                 if (response.ok) {
                     const data = await response.json();
                     setCards(data);
