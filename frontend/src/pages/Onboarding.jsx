@@ -63,28 +63,33 @@ const Onboarding = () => {
 
     const handleComplete = async () => {
         try {
-            // 1. Create User
-            const userPayload = {
+            const userId = localStorage.getItem('userId');
+            if (!userId) {
+                alert('User not found. Please login again.');
+                navigate('/login');
+                return;
+            }
+
+            // 1. Update User with personal and employment info
+            const userUpdatePayload = {
                 personal_info: toSnakeCase(formData.personalInfo),
                 employment_info: formData.employmentInfo
                     ? toSnakeCase(formData.employmentInfo)
-                    : { monthly_salary: 0, status: 'Unemployed' }, // Default safety
+                    : { monthly_salary: 0, status: 'Unemployed' },
                 onboarding_completed: true
             };
 
-            const userResponse = await fetch('http://localhost:8000/api/auth/register', {
-                method: 'POST',
+            const userResponse = await fetch(`http://localhost:8000/api/user/${userId}`, {
+                method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(userPayload)
+                body: JSON.stringify(userUpdatePayload)
             });
 
             if (!userResponse.ok) {
                 const errorData = await userResponse.json();
-                console.error("Registration error:", errorData);
-                throw new Error("User registration failed");
+                console.error("User update error:", errorData);
+                throw new Error("User update failed");
             }
-            const user = await userResponse.json();
-            const userId = user._id;
 
             // 2. Create Bank Accounts
             for (const acc of formData.bankAccounts) {
@@ -154,7 +159,6 @@ const Onboarding = () => {
             }
 
             // Success!
-            localStorage.setItem('userId', userId);
             setFormData({});
             setCompletedSteps([]);
             setCurrentStep(1);

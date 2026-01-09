@@ -1,27 +1,49 @@
 from fastapi import APIRouter, Body, HTTPException, status
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
-from app.models.user import UserCreate, UserUpdate, UserInDB
+from app.models.user import UserCreate, UserLogin, UserUpdate, UserInDB
 from app.database import user_collection
 from datetime import datetime
 from bson import ObjectId
+import hashlib
 
 router = APIRouter()
 
+def hash_password(password: str) -> str:
+    """Hash password using SHA256"""
+    return hashlib.sha256(password.encode()).hexdigest()
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Verify password against hash"""
+    return hash_password(plain_password) == hashed_password
+
 @router.post("/auth/register", response_description="Register new user", response_model=UserInDB)
 async def register_user(user: UserCreate = Body(...)):
-    user = jsonable_encoder(user)
-    
-    # Check if email or phone already exists
-    if await user_collection.find_one({"personal_info.email": user["personal_info"]["email"]}):
+    # Check if email already exists
+    if await user_collection.find_one({"email": user.email}):
         raise HTTPException(status_code=400, detail="Email already registered")
-        
-    user["created_at"] = datetime.utcnow()
-    user["updated_at"] = datetime.utcnow()
     
-    new_user = await user_collection.insert_one(user)
+    user_dict = jsonable_encoder(user)
+    user_dict["password"] = hash_password(user.password)
+    user_dict["created_at"] = datetime.utcnow()
+    user_dict["updated_at"] = datetime.utcnow()
+    user_dict["onboarding_completed"] = False
+    
+    new_user = await user_collection.insert_one(user_dict)
     created_user = await user_collection.find_one({"_id": new_user.inserted_id})
     return created_user
+
+@router.post("/auth/login", response_description="Login user", response_model=UserInDB)
+async def login_user(credentials: UserLogin = Body(...)):
+    user = await user_collection.find_one({"email": credentials.email})
+    
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+    
+    if not verify_password(credentials.password, user["password"]):
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+    
+    return user
 
 @router.get("/user/{id}", response_description="Get a single user", response_model=UserInDB)
 async def get_user(id: str):

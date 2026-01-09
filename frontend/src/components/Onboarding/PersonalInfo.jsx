@@ -85,7 +85,7 @@ const PersonalInfo = ({ data, updateData, onNext }) => {
                 <div className="flex justify-center mb-8">
                     <div className="relative group cursor-pointer">
                         <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-100 shadow-lg bg-gray-50 flex items-center justify-center">
-                            {data.profilePhoto ? (
+                            {data?.profilePhoto ? (
                                 <img src={data.profilePhoto} alt="Profile" className="w-full h-full object-cover" />
                             ) : (
                                 <User className="w-12 h-12 text-gray-400" />

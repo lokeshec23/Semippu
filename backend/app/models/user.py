@@ -9,7 +9,6 @@ class PersonalInfo(BaseModel):
     full_name: str = Field(..., min_length=3)
     phone_number: str = Field(..., pattern=r"^[0-9]{10}$")
     email: EmailStr
-
     profile_photo: Optional[str] = None # Base64 string
 
 class EmploymentInfo(BaseModel):
@@ -23,20 +22,31 @@ class EmploymentInfo(BaseModel):
     industry: Optional[str] = None
 
 class UserBase(BaseModel):
-    personal_info: PersonalInfo
-    employment_info: Optional[EmploymentInfo] = None
+    name: str = Field(..., min_length=3)
+    email: EmailStr
+    password: str = Field(..., min_length=6)  # Will be hashed
     onboarding_completed: bool = False
 
 class UserCreate(UserBase):
     pass
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
 
 class UserUpdate(BaseModel):
     personal_info: Optional[PersonalInfo] = None
     employment_info: Optional[EmploymentInfo] = None
     onboarding_completed: Optional[bool] = None
 
-class UserInDB(UserBase):
+class UserInDB(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
+    name: str
+    email: EmailStr
+    password: str  # Hashed
+    personal_info: Optional[PersonalInfo] = None
+    employment_info: Optional[EmploymentInfo] = None
+    onboarding_completed: bool = False
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
