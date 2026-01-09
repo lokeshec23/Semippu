@@ -9,9 +9,7 @@ class PersonalInfo(BaseModel):
     full_name: str = Field(..., min_length=3)
     phone_number: str = Field(..., pattern=r"^[0-9]{10}$")
     email: EmailStr
-    date_of_birth: date
-    age: int
-    gender: Optional[str] = None
+
     profile_photo: Optional[str] = None # Base64 string
 
 class EmploymentInfo(BaseModel):

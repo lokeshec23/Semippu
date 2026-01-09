@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, CreditCard, Calendar, Shield } from 'lucide-react';
+import { Plus, Trash2, CreditCard } from 'lucide-react';
 import { BANK_NAMES } from '../../utils/constants';
 
 const CardDetails = ({ data, updateData, onNext, onBack }) => {
@@ -7,7 +7,7 @@ const CardDetails = ({ data, updateData, onNext, onBack }) => {
     const [errors, setErrors] = useState({});
     const [touched, setTouched] = useState({});
 
-    const cards = data || [];
+    const cards = Array.isArray(data) ? data : [];
 
     const handleAddCard = (type = 'Credit Card') => {
         const newCard = {
