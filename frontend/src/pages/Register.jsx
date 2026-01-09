@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, User, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { API_BASE_URL } from '../utils/constants';
 
 const Register = () => {
     const navigate = useNavigate();
@@ -39,7 +40,7 @@ const Register = () => {
 
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:8000/api/auth/register', {
+            const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)

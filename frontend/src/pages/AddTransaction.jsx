@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, IndianRupee, Calendar, Tag, Store, CreditCard, Wallet, AlertCircle } from 'lucide-react';
+import { API_BASE_URL } from '../utils/constants';
 
 const TRANSACTION_CATEGORIES = [
     'Groceries', 'Fuel/Transport', 'Bills & Utilities', 'Food & Dining',
@@ -43,8 +44,8 @@ const AddTransaction = () => {
 
         try {
             const [cardsRes, banksRes] = await Promise.all([
-                fetch(`http://localhost:8000/api/cards/${userId}`),
-                fetch(`http://localhost:8000/api/bank-accounts/${userId}`)
+                fetch(`${API_BASE_URL}/api/cards/${userId}`),
+                fetch(`${API_BASE_URL}/api/bank-accounts/${userId}`)
             ]);
 
             if (cardsRes.ok) setCards(await cardsRes.json());
@@ -107,7 +108,7 @@ const AddTransaction = () => {
                 status: 'completed'
             };
 
-            const response = await fetch('http://localhost:8000/api/transactions', {
+            const response = await fetch(`${API_BASE_URL}/api/transactions`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import FinancialOverview from '../components/Dashboard/FinancialOverview';
 import CreditCardsSummary from '../components/Dashboard/CreditCardsSummary';
 import RecentTransactions from '../components/Dashboard/RecentTransactions';
+import { API_BASE_URL } from '../utils/constants';
 
 const Dashboard = () => {
     const [activeTab, setActiveTab] = useState('home');
@@ -19,7 +20,7 @@ const Dashboard = () => {
             }
 
             try {
-                const response = await fetch(`http://localhost:8000/api/user/${userId}`);
+                const response = await fetch(`${API_BASE_URL}/api/user/${userId}`);
                 if (response.ok) {
                     const user = await response.json();
                     setUserName(user.personal_info?.full_name || 'User');

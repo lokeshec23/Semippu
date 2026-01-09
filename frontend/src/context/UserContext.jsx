@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
+import { API_BASE_URL } from '../utils/constants';
+
 const UserContext = createContext();
 
 export const useUser = () => {
@@ -31,7 +33,7 @@ export const UserProvider = ({ children }) => {
 
         setLoading(true);
         try {
-            const response = await fetch(`http://localhost:8000/api/user/${userId}`);
+            const response = await fetch(`${API_BASE_URL}/api/user/${userId}`);
             if (response.ok) {
                 const data = await response.json();
                 setUser(data);

@@ -12,5 +12,7 @@ export const EMPLOYMENT_STATUS_OPTIONS = [
 ];
 
 export const BANK_NAMES = [
-    'SBI', 'HDFC', 'ICICI', 'Axis', 'PNB', 'Kotak', 'Others'
+    'SBI', 'HDFC', 'ICICI', 'Axis', 'PNB', 'Kotak', 'Bank of Baroda', 'Others'
 ];
+
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';

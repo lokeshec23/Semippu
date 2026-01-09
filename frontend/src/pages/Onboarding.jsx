@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Stepper from '../components/Onboarding/Stepper';
 import useLocalStorage from '../hooks/useLocalStorage';
-import { ONBOARDING_STEPS } from '../utils/constants';
+import { ONBOARDING_STEPS, API_BASE_URL } from '../utils/constants';
 
 // Step Components
 import PersonalInfo from '../components/Onboarding/PersonalInfo';
@@ -79,7 +79,7 @@ const Onboarding = () => {
                 onboarding_completed: true
             };
 
-            const userResponse = await fetch(`http://localhost:8000/api/user/${userId}`, {
+            const userResponse = await fetch(`${API_BASE_URL}/api/user/${userId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userUpdatePayload)
@@ -102,7 +102,7 @@ const Onboarding = () => {
                     branchName: acc.branchName,
                     isPrimary: acc.isPrimary || false
                 };
-                await fetch('http://localhost:8000/api/bank-accounts', {
+                await fetch(`${API_BASE_URL}/api/bank-accounts`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(bankPayload)
@@ -127,7 +127,7 @@ const Onboarding = () => {
                     // Debit specific
                     dailyLimit: card.dailyLimit ? Number(card.dailyLimit) : undefined
                 };
-                await fetch('http://localhost:8000/api/cards', {
+                await fetch(`${API_BASE_URL}/api/cards`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(cardPayload)
@@ -145,7 +145,7 @@ const Onboarding = () => {
                     });
                 }
 
-                await fetch('http://localhost:8000/api/budgets', {
+                await fetch(`${API_BASE_URL}/api/budgets`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
