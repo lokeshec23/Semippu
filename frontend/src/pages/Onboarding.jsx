@@ -90,7 +90,12 @@ const Onboarding = () => {
             for (const acc of formData.bankAccounts) {
                 const bankPayload = {
                     userId,
-                    ...toSnakeCase(acc)
+                    bankName: acc.bankName,
+                    accountNumber: acc.accountNumber,
+                    ifscCode: acc.ifscCode,
+                    accountType: acc.accountType,
+                    branchName: acc.branchName,
+                    isPrimary: acc.isPrimary || false
                 };
                 await fetch('http://localhost:8000/api/bank-accounts', {
                     method: 'POST',
@@ -103,14 +108,19 @@ const Onboarding = () => {
             for (const card of formData.cardDetails) {
                 const cardPayload = {
                     userId,
-                    ...toSnakeCase(card),
-                    card_provider: 'Visa', // Auto-detect later
-                    // Convert numeric fields
-                    credit_limit: card.creditLimit ? Number(card.creditLimit) : undefined,
-                    current_outstanding: card.currentOutstanding ? Number(card.currentOutstanding) : 0,
-                    billing_date: card.billingDate ? Number(card.billingDate) : undefined,
-                    due_date: card.dueDate ? Number(card.dueDate) : undefined,
-                    daily_limit: card.dailyLimit ? Number(card.dailyLimit) : undefined
+                    cardType: card.cardType,
+                    cardNumber: card.cardNumber,
+                    cardHolderName: card.cardHolderName,
+                    bankName: card.bankName,
+                    expiryDate: card.expiryDate,
+                    cardProvider: card.cardProvider || 'Visa',
+                    // Credit specific
+                    creditLimit: card.creditLimit ? Number(card.creditLimit) : undefined,
+                    currentOutstanding: card.currentOutstanding ? Number(card.currentOutstanding) : 0,
+                    billingDate: card.billingDate ? Number(card.billingDate) : undefined,
+                    dueDate: card.dueDate ? Number(card.dueDate) : undefined,
+                    // Debit specific
+                    dailyLimit: card.dailyLimit ? Number(card.dailyLimit) : undefined
                 };
                 await fetch('http://localhost:8000/api/cards', {
                     method: 'POST',
@@ -124,28 +134,30 @@ const Onboarding = () => {
                 const currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM
                 // format categories as dict {name: amount}
                 const catDict = {};
-                formData.budget.categories.forEach(c => {
-                    if (c.amount > 0) catDict[c.name] = c.amount;
-                });
+                if (formData.budget.categories) {
+                    formData.budget.categories.forEach(c => {
+                        if (c.amount > 0) catDict[c.name] = c.amount;
+                    });
+                }
 
                 await fetch('http://localhost:8000/api/budgets', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         userId,
-                        month_year: currentMonth,
-                        total_budget: Number(formData.budget.totalBudget),
-                        savings_goal: Number(formData.budget.savingsGoal || 0),
+                        monthYear: currentMonth,
+                        totalBudget: Number(formData.budget.totalBudget),
+                        savingsGoal: Number(formData.budget.savingsGoal || 0),
                         categories: catDict
                     })
                 });
             }
 
             // Success!
+            localStorage.setItem('userId', userId);
             setFormData({});
             setCompletedSteps([]);
             setCurrentStep(1);
-            // alert("Account Setup Successful! Welcome using ID: " + userId);
             navigate('/dashboard');
 
         } catch (error) {

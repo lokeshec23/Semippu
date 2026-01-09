@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Home, PieChart, CreditCard, Settings, User, Bell } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import FinancialOverview from '../components/Dashboard/FinancialOverview';
@@ -7,7 +7,30 @@ import RecentTransactions from '../components/Dashboard/RecentTransactions';
 
 const Dashboard = () => {
     const [activeTab, setActiveTab] = useState('home');
+    const [userName, setUserName] = useState('User');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const userId = localStorage.getItem('userId');
+            if (!userId) {
+                navigate('/onboarding');
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:8000/api/user/${userId}`);
+                if (response.ok) {
+                    const user = await response.json();
+                    setUserName(user.personal_info?.full_name || 'User');
+                }
+            } catch (error) {
+                console.error('Error fetching user:', error);
+            }
+        };
+
+        fetchUser();
+    }, [navigate]);
 
     return (
         <div className="min-h-screen bg-gray-50 flex">
@@ -46,7 +69,7 @@ const Dashboard = () => {
                             <User className="w-5 h-5" />
                         </div>
                         <div>
-                            <h4 className="text-sm font-semibold text-gray-900">User</h4>
+                            <h4 className="text-sm font-semibold text-gray-900">{userName}</h4>
                             <p className="text-xs text-gray-500">Pro Member</p>
                         </div>
                     </div>
@@ -59,7 +82,7 @@ const Dashboard = () => {
                 <header className="flex justify-between items-center mb-8">
                     <div>
                         <h2 className="text-2xl font-bold text-gray-900">Dashboard</h2>
-                        <p className="text-gray-500">Welcome back, here's your financial overview.</p>
+                        <p className="text-gray-500">Welcome back {userName.split(' ')[0]}, here's your financial overview.</p>
                     </div>
                     <button className="relative w-10 h-10 rounded-full bg-white border border-gray-100 flex items-center justify-center text-gray-400 hover:text-blue-600 transition-colors shadow-sm">
                         <Bell className="w-5 h-5" />
