@@ -7,7 +7,7 @@ MONGO_DETAILS = os.getenv("MONGO_DETAILS", "mongodb://localhost:27017")
 client = AsyncIOMotorClient(MONGO_DETAILS)
 
 # Database Name
-database = client.personal_finance_tracker
+database = client.semippu
 
 # Collections
 user_collection = database.get_collection("users")

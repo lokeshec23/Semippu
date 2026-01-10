@@ -18,7 +18,7 @@ async def create_card(card: CardCreate = Body(...)):
     created_card = await card_collection.find_one({"_id": new_card.inserted_id})
     return created_card
 
-@router.get("/cards/{user_id}", response_description="List all cards for a user", response_model=List[CardInDB])
+@router.get("/cards/{user_id}", response_description="List all cards for a user", response_model=List[CardInDB], response_model_by_alias=True)
 async def list_cards(user_id: str):
     cards = await card_collection.find({"userId": user_id}).to_list(100)
     return cards

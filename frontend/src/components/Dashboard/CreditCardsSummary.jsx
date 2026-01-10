@@ -86,49 +86,70 @@ const CreditCardsSummary = () => {
 
             <div className="flex gap-4 overflow-x-auto pb-4 custom-scrollbar">
                 {cards.map((card, index) => {
-                    const limit = card.credit_limit || 0;
-                    const used = card.current_outstanding || 0;
+                    const limit = card.creditLimit || 0;
+                    const used = card.currentOutstanding || 0;
                     const utilization = limit > 0 ? (used / limit) * 100 : 0;
-                    const lastFour = card.card_number?.slice(-4) || '****';
+                    const lastFour = card.cardNumber?.slice(-4) || '****';
 
                     return (
                         <div
                             key={card._id}
                             onClick={() => navigate(`/cards/${card._id}`)}
-                            className={`min-w-[300px] rounded-xl p-5 bg-gradient-to-br ${getCardColor(index)} text-white relative flex-shrink-0 group cursor-pointer transition-transform hover:-translate-y-1`}
+                            className={`min-w-[300px] rounded-2xl p-6 bg-gradient-to-br ${getCardColor(index)} text-white relative flex-shrink-0 group cursor-pointer transition-all hover:-translate-y-1 shadow-md`}
                         >
+                            {/* Header: Bank Name  & Type Badge */}
                             <div className="flex justify-between items-start mb-8">
-                                <CreditCard className="w-8 h-8 opacity-80" />
-                                <span className="font-mono tracking-widest text-lg opacity-80">**** {lastFour}</span>
+                                <div>
+                                    <h3 className="font-bold text-xl tracking-wide text-white drop-shadow-sm">
+                                        {card.bankName}
+                                    </h3>
+                                    <p className="text-white/80 text-xs font-medium mt-1">
+                                        {card.cardType === 'credit' ? 'Credit Card' : 'Debit Card'}
+                                    </p>
+                                </div>
+                                <div className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full border border-white/10">
+                                    <CreditCard className="w-5 h-5 text-white" />
+                                </div>
                             </div>
 
-                            <div className="mb-4">
-                                <p className="text-white/60 text-xs uppercase tracking-wider font-medium">
-                                    {card.card_type === 'credit' ? 'Current Outstanding' : 'Card Type'}
-                                </p>
-                                <h4 className="text-2xl font-bold mt-1">
-                                    {card.card_type === 'credit' ? `₹${used.toLocaleString()}` : card.card_type}
-                                </h4>
+                            {/* Card Number */}
+                            <div className="mb-8 pl-1">
+                                <span className="font-mono text-xl tracking-widest text-white/90">
+                                    **** {lastFour}
+                                </span>
                             </div>
 
-                            {card.card_type === 'credit' && limit > 0 && (
-                                <div className="space-y-2">
-                                    <div className="flex justify-between text-xs text-white/80">
-                                        <span>Limit: ₹{limit.toLocaleString()}</span>
-                                        <span>{Math.round(utilization)}% Used</span>
+                            {/* Footer: Balance/Limit & Progress */}
+                            <div className="mt-auto">
+                                <div className="flex justify-between items-end mb-2">
+                                    <div>
+                                        <p className="text-white/70 text-xs uppercase tracking-wider font-semibold mb-1">
+                                            {card.cardType === 'credit' ? 'Available Credit' : 'Current Balance'}
+                                        </p>
+                                        <h4 className="text-2xl font-bold">
+                                            {card.cardType === 'credit'
+                                                ? `₹${(limit - used).toLocaleString()}`
+                                                : `₹${used.toLocaleString()}`
+                                            }
+                                        </h4>
                                     </div>
-                                    <div className="h-1.5 w-full bg-black/20 rounded-full overflow-hidden">
+                                    {card.cardType === 'credit' && (
+                                        <div className="text-right">
+                                            <p className="text-white/90 text-sm font-semibold">{Math.round(utilization)}%</p>
+                                            <p className="text-white/60 text-xs">Used</p>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {card.cardType === 'credit' && limit > 0 && (
+                                    <div className="h-1.5 w-full bg-black/20 rounded-full overflow-hidden mt-3">
                                         <div
-                                            className={`h-full rounded-full ${utilization > 80 ? 'bg-red-400' : utilization > 30 ? 'bg-yellow-400' : 'bg-green-400'}`}
+                                            className={`h-full rounded-full transition-all duration-500 ${utilization > 80 ? 'bg-red-400' : utilization > 30 ? 'bg-yellow-400' : 'bg-green-400'}`}
                                             style={{ width: `${Math.min(utilization, 100)}%` }}
                                         />
                                     </div>
-                                </div>
-                            )}
-
-                            <h3 className="absolute bottom-5 right-5 font-semibold text-white/20 text-xl">
-                                {card.bank_name}
-                            </h3>
+                                )}
+                            </div>
                         </div>
                     );
                 })}

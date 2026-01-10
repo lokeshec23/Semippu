@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Calendar, Filter, Download, MoreVertical, CreditCard, ShoppingBag, Coffee, Car, TrendingUp } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, Legend } from 'recharts';
+import TransactionForm from '../Transactions/TransactionForm';
 import { API_BASE_URL } from '../../utils/constants';
 
 const CATEGORY_ICONS = {
@@ -24,6 +25,8 @@ const CardDetailView = () => {
     const { cardId } = useParams();
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('transactions');
+    const [isTxModalOpen, setIsTxModalOpen] = useState(false);
+    const userId = localStorage.getItem('userId');
     const [cardData, setCardData] = useState(null);
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -302,11 +305,22 @@ const CardDetailView = () => {
 
             {/* Floating Action Button */}
             <button
-                onClick={() => navigate('/transactions/add')}
+                onClick={() => setIsTxModalOpen(true)}
                 className="fixed bottom-6 right-6 w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg shadow-blue-300 flex items-center justify-center hover:bg-blue-700 transform hover:scale-105 transition-all z-20"
             >
                 <Plus className="w-6 h-6" />
             </button>
+
+            <TransactionForm
+                isOpen={isTxModalOpen}
+                onClose={() => setIsTxModalOpen(false)}
+                onSuccess={() => {
+                    fetchCardTransactions(); // Refresh
+                }}
+                userId={userId}
+                cardId={cardId}
+                cardName={cardData?.bank_name}
+            />
         </div>
     );
 };

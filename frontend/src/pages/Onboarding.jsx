@@ -162,6 +162,7 @@ const Onboarding = () => {
             setFormData({});
             setCompletedSteps([]);
             setCurrentStep(1);
+            localStorage.setItem('userId', userId);
             navigate('/dashboard');
 
         } catch (error) {

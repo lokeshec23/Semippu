@@ -50,3 +50,5 @@ class CardInDB(CardBase):
     class Config:
         populate_by_name = True
         arbitrary_types_allowed = True
+        json_encoders = {datetime: lambda v: v.isoformat()}
+        by_alias = True  # Serialize using alias names (camelCase)
