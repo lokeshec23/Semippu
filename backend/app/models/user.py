@@ -1,6 +1,8 @@
 from pydantic import BaseModel, EmailStr, Field, BeforeValidator
 from typing import Optional, Annotated
 from datetime import date, datetime
+from bson import ObjectId
+
 
 # Helper for ObjectId
 PyObjectId = Annotated[str, BeforeValidator(str)]
@@ -34,6 +36,30 @@ class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
+class UserResponse(BaseModel):
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)
+    name: str
+    email: EmailStr
+    personal_info: Optional[PersonalInfo] = None
+    employment_info: Optional[EmploymentInfo] = None
+    onboarding_completed: bool = False
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+
+    class Config:
+        populate_by_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+
+class TokenResponse(BaseModel):
+    access_token: str
+    refresh_token: str
+    token_type: str = "bearer"
+    user: UserResponse
+
+class TokenRefresh(BaseModel):
+    refresh_token: str
+
 class UserUpdate(BaseModel):
     personal_info: Optional[PersonalInfo] = None
     employment_info: Optional[EmploymentInfo] = None
@@ -44,6 +70,7 @@ class UserInDB(BaseModel):
     name: str
     email: EmailStr
     password: str  # Hashed
+    refresh_token: Optional[str] = None
     personal_info: Optional[PersonalInfo] = None
     employment_info: Optional[EmploymentInfo] = None
     onboarding_completed: bool = False
@@ -53,3 +80,4 @@ class UserInDB(BaseModel):
     class Config:
         populate_by_name = True
         arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
