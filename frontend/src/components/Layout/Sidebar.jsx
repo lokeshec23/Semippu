@@ -22,7 +22,7 @@ const Sidebar = ({ isExpanded, setIsExpanded, isMobileOpen, setIsMobileOpen }) =
         { icon: Receipt, label: 'Transactions', path: '/transactions' },
         { icon: TrendingUp, label: 'Analytics', path: '/analytics' },
         { icon: Building2, label: 'Bank Accounts', path: '/bank-accounts' },
-        { icon: CreditCard, label: 'Cards', path: '/dashboard' }, // Cards are shown on dashboard
+        { icon: CreditCard, label: 'Cards', path: '/cards' },
         { icon: Settings, label: 'Settings', path: '/settings' },
     ];
 

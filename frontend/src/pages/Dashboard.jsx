@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Bell } from 'lucide-react';
+import { Bell, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import FinancialOverview from '../components/Dashboard/FinancialOverview';
 import CreditCardsSummary from '../components/Dashboard/CreditCardsSummary';
